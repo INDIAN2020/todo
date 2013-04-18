@@ -22,45 +22,15 @@ class TodoController extends BaseController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @return Response
      */
     public function store()
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        return($id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
+        // $validation = $this->todo->validate(Input::all());
+        $new = $this->todo->create(Input::all());
+        return($new);
     }
 
     /**
@@ -71,7 +41,14 @@ class TodoController extends BaseController
      */
     public function update($id)
     {
-        //
+        var_dump($id);
+        var_dump(Input::all());
+
+        $item = $this->todo->find($id);
+        $item->title = Input::get('title');
+        $item->description = Input::get('description');
+        $item->save();
+
     }
 
     /**
@@ -82,7 +59,10 @@ class TodoController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        $item = $this->todo->find($id);
+        if(!$item)
+            return 'item '.$id.' not found';
+        return $this->todo->destroy($id);
     }
 
 }
